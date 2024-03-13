@@ -28,7 +28,7 @@ export class JwtStrategy extends PassportStrategy(
     email: string;
   }) {
     const user =
-      await this.prisma.user.findUnique({
+      await this.prisma.company.findUnique({
         where: {
           id: payload.sub,
         },

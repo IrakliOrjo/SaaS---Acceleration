@@ -13,7 +13,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
+model Company {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -21,24 +21,46 @@ model User {
   email String @unique
   hash  String
 
-  firstName String?
-  lastName  String?
-  bookmarks Bookmark[]
+  name     String
+  country  String
+  industry String
 
-  @@map("users")
+  verified Boolean @default(false)
+
+  subscriptionId        Int?
+  subscription          Subscription? @relation(fields: [subscriptionId], references: [id])
+  subscriptionPeriodEnd DateTime?
+
+  Coworkers Coworker[]
 }
 
-model Bookmark {
+model Subscription {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  title       String
-  description String?
-  link        String
+  tier  subscriptionTier
+  rules String[]
+  User  Company[]
+}
 
-  userId Int
-  user   User @relation(fields: [userId], references: [id])
+model Coworker {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  @@map("bookmarks")
+  company   Company @relation(fields: [companyId], references: [id])
+  companyId Int
+}
+
+enum subscriptionTier {
+  free
+  basic
+  premium
+}
+
+model EmailVerification {
+  id    Int    @id @default(autoincrement())
+  email String @unique
+  token String @unique
 }
