@@ -5,13 +5,10 @@ import {
   HttpCode,
   HttpStatus,
   Param,
-  ParseIntPipe,
   Post,
-  UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { AuthDto } from './dto';
-import { LoginGuard } from './guard/login.guards';
+import { AuthDto, signDto } from './dto';
 
 @Controller('auth')
 export class AuthController {
@@ -22,10 +19,10 @@ export class AuthController {
     console.log('hey');
     return this.authService.signup(dto);
   }
-  @UseGuards(LoginGuard)
+
   @Post('signin')
   @HttpCode(HttpStatus.OK)
-  signin(@Body() dto: AuthDto) {
+  signin(@Body() dto: signDto) {
     return this.authService.signin(dto);
   }
 

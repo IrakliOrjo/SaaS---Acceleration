@@ -27,9 +27,10 @@ model Company {
 
   verified Boolean @default(false)
 
-  subscriptionId        Int?
-  subscription          Subscription? @relation(fields: [subscriptionId], references: [id])
+  subscriptionTier      subscriptionTier?
+  subscription          Subscription[]
   subscriptionPeriodEnd DateTime?
+  bill                  Float             @default(0)
 
   Coworkers Coworker[]
 }
@@ -39,15 +40,25 @@ model Subscription {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  tier  subscriptionTier
-  rules String[]
-  User  Company[]
+  tier             subscriptionTier
+  maxFilesPerMonth Int
+  maxMembers       Int
+  price            Float?
+
+  companyId Int     @unique
+  company   Company @relation(fields: [companyId], references: [id])
 }
 
 model Coworker {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  email String @unique
+  name  String
+  hash  String
+
+  verified Boolean @default(false)
 
   company   Company @relation(fields: [companyId], references: [id])
   companyId Int

@@ -13,8 +13,6 @@ import { MailController } from './mail.controller';
 @Module({
   imports: [
     MailerModule.forRoot({
-      // transport: 'smtps://user@example.com:topsecret@smtp.example.com',
-      // or
       transport: {
         host: 'smtp.gmail.com',
         secure: false,
@@ -28,7 +26,7 @@ import { MailController } from './mail.controller';
       },
       template: {
         dir: join(__dirname, 'templates'),
-        adapter: new HandlebarsAdapter(), // or new PugAdapter() or new EjsAdapter()
+        adapter: new HandlebarsAdapter(),
         options: {
           strict: true,
         },
@@ -37,6 +35,6 @@ import { MailController } from './mail.controller';
   ],
   controllers: [MailController],
   providers: [MailService],
-  exports: [MailService], // 👈 export for DI
+  exports: [MailService],
 })
 export class MailModule {}

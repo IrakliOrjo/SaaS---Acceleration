@@ -4,12 +4,11 @@ import {
 } from '@nestjs/common';
 import { Company } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
-import { AuthDto } from './dto';
+import { AuthDto, signDto } from './dto';
 import * as argon from 'argon2';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { MailService } from 'src/email-service/mail.service';
 import { MailerService } from '@nestjs-modules/mailer';
 
 @Injectable()
@@ -20,12 +19,11 @@ export class AuthService {
     private config: ConfigService,
     private mailerService: MailerService,
   ) {}
-  login() {}
 
   async signup(dto: AuthDto) {
     //generate passwrod hashs
     const hash = await argon.hash(dto.password);
-    //save new yser in db
+    //save new user in db
     try {
       const user =
         await this.prisma.company.create({
@@ -44,11 +42,10 @@ export class AuthService {
       const url = `http://localhost:3333/auth/verify/${token.access_token}`;
       await this.mailerService.sendMail({
         to: dto.email,
-        // from: '"Support Team" <support@example.com>', // override default from
+
         subject: 'Welcome! Confirm your Email',
-        template: './confirmation', // `.hbs` extension is appended automatically
+        template: './confirmation',
         context: {
-          // ✏️ filling curly brackets with content
           name: dto.name,
           url,
         },
@@ -75,7 +72,7 @@ export class AuthService {
       throw err;
     }
   }
-  async signin(dto: AuthDto) {
+  async signin(dto: signDto) {
     //find user by email
     const user =
       await this.prisma.company.findUnique({
@@ -87,6 +84,11 @@ export class AuthService {
     if (!user) {
       throw new ForbiddenException(
         'Credentials Incorrect',
+      );
+    }
+    if (!user.verified) {
+      throw new ForbiddenException(
+        'Account not activated',
       );
     }
     //compare password
@@ -118,7 +120,7 @@ export class AuthService {
     const token = await this.jwt.signAsync(
       payLoad,
       {
-        expiresIn: '30m',
+        expiresIn: '1200m',
         secret: secret,
       },
     );
@@ -158,7 +160,7 @@ export class AuthService {
     return 'Account Activated';
   }
 
-  async validateAccount(email) {
+  async validateAccount(email: string) {
     let accToVerify =
       await this.prisma.company.findUnique({
         where: {

@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
-import { BookmarkModule } from './bookmark/bookmark.module';
+
 import { PrismaModule } from './prisma/prisma.module';
 import { ConfigModule } from '@nestjs/config';
 import { MailModule } from './email-service/mail.module';
+import { SubscriptionModule } from './Service/subscription/subscription.module';
 
 @Module({
   imports: [
@@ -14,7 +15,7 @@ import { MailModule } from './email-service/mail.module';
     MailModule,
     AuthModule,
     UserModule,
-    BookmarkModule,
+    SubscriptionModule,
     PrismaModule,
   ],
 })

@@ -1,4 +1,5 @@
 import {
+  Allow,
   IsEmail,
   IsNotEmpty,
   IsString,
@@ -24,4 +25,17 @@ export class AuthDto {
   @IsString()
   @IsNotEmpty()
   industry: string;
+}
+
+export class signDto {
+  @IsEmail()
+  @IsNotEmpty()
+  email: string;
+
+  @IsString()
+  @IsNotEmpty()
+  password: string;
+
+  @Allow()
+  extra?: false;
 }

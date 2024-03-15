@@ -43,6 +43,9 @@ describe('App e2e', () => {
     const dto: AuthDto = {
       email: 'irakliorjo@gmail.com',
       password: '123',
+      name: 'groovy',
+      country: 'Wales',
+      industry: 'Development',
     };
     describe('Signup', () => {
       it('should throw if email empty', () => {
