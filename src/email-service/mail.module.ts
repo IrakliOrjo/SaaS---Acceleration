@@ -14,15 +14,16 @@ import { MailController } from './mail.controller';
   imports: [
     MailerModule.forRoot({
       transport: {
-        host: 'smtp.gmail.com',
-        secure: false,
+        host: 'smtp.yandex.com',
+        secure: true,
+        port: 465,
         auth: {
-          user: 'irakliorjo92',
-          pass: process.env.pass,
+          user: 'irakliorjo',
+          pass: process.env.PASS,
         },
       },
       defaults: {
-        from: '"No Reply" <noreply@example.com>',
+        from: '"Account activation" <irakliorjo@yandex.ru>',
       },
       template: {
         dir: join(__dirname, 'templates'),
