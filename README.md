@@ -2,13 +2,12 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
+````
 ## Installation, install dependecies
 
 Install dependencies: npm ci
 Apply pending migrations: npx prisma migrate deploy
 Seed db: npx prisma db seed
-
-````
 
 ## ENV FILE
 
