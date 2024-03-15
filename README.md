@@ -2,14 +2,25 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## Installation
+## Installation, install dependecies
 
-```bash
-$ npm install
-```
+Install dependencies: npm ci
+Apply pending migrations: npx prisma migrate deploy
+Seed db: npx prisma db seed
 
-##ENV FILE
+````
+
+## ENV FILE
+
 rename the env.example to .env
+
+## To run DOCKER, Commands in package.json
+
+Remove docker container: npm run db:dev:rm,
+
+Create start docker container: npm run db:dev:up,
+
+To restart Docker containers(does all of above commands) : npm run db:dev:restart
 
 ## Running the app
 
@@ -20,9 +31,7 @@ $ npm run start
 # watch mode
 $ npm run start:dev
 
-# production mode
-$ npm run start:prod
-```
+````
 
 ## endpoints
 
